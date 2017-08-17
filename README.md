@@ -2,7 +2,7 @@
 
 Lightweight timeline diagram jQuery plugin.
 
-Distributed under an MIT license.
+
 
 ![Sample diagram](http://i.imgur.com/QB8vBhw.png)
 
@@ -74,3 +74,6 @@ IE11+
 Chrome
 
 Firefox
+
+
+Distributed under an MIT license.
