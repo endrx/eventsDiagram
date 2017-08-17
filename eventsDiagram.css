@@ -1,0 +1,105 @@
+/*
+eventsDiagram
+Copyright (c) 2017 endrx - endymionr@gmail.com
+MIT License Applies
+*/
+
+.ed-container * {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.ed-container {
+    white-space: nowrap;
+    overflow: auto;
+    border: 1px solid lightgray;
+    /*max-height: 100px;*/
+}
+
+.ed-corner-header {
+    position: relative;
+    width: 0;
+    height: 0;
+    z-index: 20;
+}
+    .ed-corner-header div {
+        width: 100px;
+        height: 40px;
+        background-color: white;
+        border-right: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+        text-align: center;
+    }
+
+.ed-left-header {
+    margin-top: 40px;
+    position: relative;
+    z-index: 10;
+    width: 100px;
+    background-color: white;
+    float: left;
+    border-right: 1px solid lightgray;
+}
+.ed-left-header-item {
+    font-size: 12px;
+    white-space: normal;
+    border-bottom: 1px solid lightgray;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.ed-top-header {
+    margin-left: 100px;
+    height: 40px;
+    position: relative;
+    z-index: 1;
+    line-height: 11px;
+}
+
+.ed-calend-month, .ed-calend-day {
+    padding-top: 5px;
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    height: 20px;
+    overflow: hidden;
+    background-color: white;
+    margin: 0;
+}
+.ed-calend-month {
+}
+
+.ed-grid {
+    margin-left: 100px;
+    padding-bottom: 4px;
+    position: relative;
+}
+
+.ed-cell {
+    z-index: -1;
+    display: inline-block;
+    height: 100%;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.ed-bar-container {
+    position: absolute;
+    top: 0;
+    height: 0;
+}
+.ed-bar-row {
+    position: relative;
+}
+.ed-bar {
+    position: absolute;
+    margin-top: 4px;
+    z-index: 1;
+    display: inline-block;
+    background-color: lightgray;
+    border: 1px solid gray;
+    border-radius: 2px;
+    height: 18px;
+}
