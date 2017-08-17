@@ -2,7 +2,7 @@
 
 Lightweight timeline diagram jQuery plugin.
 
-Example: http://jsbin.com/fufito/edit?html,js,output
+Example: http://output.jsbin.com/fufito
 
 
 ![Sample diagram](http://i.imgur.com/QB8vBhw.png)
