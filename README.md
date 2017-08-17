@@ -26,11 +26,9 @@ Example: http://output.jsbin.com/fufito
                 },
                 {
                     name: "Title 2",
-                    episodes: [{
-                        beginTime: new Date(2017, 8, 15, 18, 0, 0),
-                        endTime: new Date(2017, 8, 16, 19, 0, 0),
-                        color: "blue"
-                    }],
+                    beginTime: new Date(2017, 8, 15, 18, 0, 0),
+                    endTime: new Date(2017, 8, 16, 19, 0, 0),
+                    color: "blue",
                     events: [
                         {
                             name: "Title 2.1: long long long long long long long long title",
