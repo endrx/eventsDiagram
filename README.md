@@ -10,8 +10,7 @@ Example: http://output.jsbin.com/fufito
 
 ```javascript
 
-  let events = [
-                {
+  let events = [{
                     name: "Title 1",
                     episodes: [{
                         beginTime: new Date(2017, 7, 29, 14, 0, 0),
@@ -23,8 +22,7 @@ Example: http://output.jsbin.com/fufito
                         endTime: new Date(2018, 9, 26, 17, 0, 0),
                         color: "cyan"
                     }]
-                },
-                {
+                }, {
                     name: "Title 2",
                     beginTime: new Date(2017, 8, 15, 18, 0, 0),
                     endTime: new Date(2017, 8, 16, 19, 0, 0),
@@ -43,8 +41,7 @@ Example: http://output.jsbin.com/fufito
                                     color: "green"
                                 }
                             ]
-                        },
-                        {
+                        }, {
                             name: "Title 2.2",
                             beginTime: new Date(2017, 8, 16, 18, 30, 0),
                             endTime: new Date(2017, 8, 17, 19, 30, 0)
