@@ -1,10 +1,15 @@
 # eventsDiagram
 
-Lightweight jQuery diagram plugin.
+Lightweight jQuery timeline diagram plugin.
 
 ![Sample diagram](http://i.imgur.com/QB8vBhw.png)
 
-Tested:
+
+Focused on:
+
+
 IE11+
+
 Chrome
+
 Firefox
