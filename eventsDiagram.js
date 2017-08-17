@@ -1,6 +1,6 @@
 /*
 eventsDiagram
-Copyright (c) 2017 endrx - endymionr@gmail.com
+Copyright (c) 2017 by endrx
 MIT License Applies
 */
 
