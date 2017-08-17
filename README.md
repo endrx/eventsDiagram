@@ -40,20 +40,16 @@ Example: http://output.jsbin.com/fufito
                             events: [
                                 {
                                     name: "Title 2.1.1",
-                                    episodes: [{
-                                        beginTime: new Date(2017, 8, 15, 18, 30, 0),
-                                        endTime: new Date(2017, 8, 16, 19, 30, 0),
-                                        color: "green"
-                                    }],
+                                    beginTime: new Date(2017, 8, 15, 18, 30, 0),
+                                    endTime: new Date(2017, 8, 16, 19, 30, 0),
+                                    color: "green"
                                 }
                             ]
                         },
                         {
                             name: "Title 2.2",
-                            episodes: [{
-                                beginTime: new Date(2017, 8, 16, 18, 30, 0),
-                                endTime: new Date(2017, 8, 17, 19, 30, 0),
-                            }]
+                            beginTime: new Date(2017, 8, 16, 18, 30, 0),
+                            endTime: new Date(2017, 8, 17, 19, 30, 0)
                         }
                     ]
                 }];
