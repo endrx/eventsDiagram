@@ -1,6 +1,6 @@
 # eventsDiagram
 
-Lightweight jQuery timeline diagram plugin.
+Lightweight timeline diagram jQuery plugin.
 
 Distributed under an MIT license.
 
