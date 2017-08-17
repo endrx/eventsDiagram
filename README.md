@@ -32,11 +32,9 @@ Example: http://output.jsbin.com/fufito
                     events: [
                         {
                             name: "Title 2.1: long long long long long long long long title",
-                            episodes: [{
-                                beginTime: new Date(2017, 8, 15, 18, 30, 0),
-                                endTime: new Date(2017, 8, 16, 19, 30, 0),
-                                color: "red"
-                            }],
+                            beginTime: new Date(2017, 8, 15, 18, 30, 0),
+                            endTime: new Date(2017, 8, 16, 19, 30, 0),
+                            color: "red"
                             events: [
                                 {
                                     name: "Title 2.1.1",
