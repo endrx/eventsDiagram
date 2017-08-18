@@ -34,6 +34,7 @@ MIT License Applies
                 .append(control.$grid);
 
             control.$element
+                .empty()
                 .append(control.$mainContainer);
 
             control.$mainContainer.on("scroll", function (e) {
@@ -120,13 +121,12 @@ MIT License Applies
                     let $leftHeaderRow = $("<div />")
                                     .addClass("ed-left-header-item")
                                     .css("padding-left", indent + "px")
+                                    .css("color", typeof event.nameColor === "undefined" ? "" : event.nameColor)
                                     .html(event.name);
 
                     control.$leftHeader.append($leftHeaderRow);
 
-                    if (typeof event.events !== "undefined" && event.events != null) {
-                        buildLeftHeadersRec(event.events, indent + options.leftHeaderIndentStep);
-                    }
+                    buildLeftHeadersRec(event.events, indent + options.leftHeaderIndentStep);
 
                 });
             }
@@ -146,17 +146,18 @@ MIT License Applies
                                 .css("width", control.options.columnWidth * control.days);
 
                     let episodes = getEventEpisodes(event);
+                    if (episodes != null) {
+                        $.each(episodes, function (ii, episode) {
+                            let $bar = $("<div />")
+                                        .addClass("ed-bar")
+                                        .css("left", getPixelSize({ beginTime: control.gridBeginTime, endTime: parseTime(episode.beginTime) }))
+                                        .css("width", getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(episode.endTime) }))
+                                        .css("background-color", episode.color);
+                            $barRow.append($bar);
+                        });
 
-                    $.each(episodes, function (ii, episode) {
-                        let $bar = $("<div />")
-                                    .addClass("ed-bar")
-                                    .css("left", getPixelSize({ beginTime: control.gridBeginTime, endTime: episode.beginTime }))
-                                    .css("width", getPixelSize({ beginTime: episode.beginTime, endTime: episode.endTime }))
-                                    .css("background-color", episode.color);
-                        $barRow.append($bar);
-                    });
-
-                    $barRows.append($barRow);
+                        $barRows.append($barRow);
+                    }
 
                     if (typeof event.events !== "undefined" && event.events != null) {
                         buildBarRowsRec(event.events);
@@ -232,21 +233,30 @@ MIT License Applies
             }, 1);
         }
 
+        function parseTime(object) {
+            if (typeof object == "string")
+                return new Date(object);
+            return object;
+        }
 
         function findTimeRanges(events) {
 
-            let maxTime = new Date(-8640000000000000);
-            let minTime = new Date(8640000000000000);
+            let minTime = null
+            let maxTime = null;
 
             function findTimeRangesInt(events) {
 
                 $.each(events, function (i, event) {
                     let episodes = getEventEpisodes(event);
                     $.each(episodes, function (ii, episode) {
-                        if (minTime > episode.beginTime) minTime = episode.beginTime;
-                        if (maxTime < episode.beginTime) maxTime = episode.beginTime;
-                        if (minTime > episode.endTime) minTime = episode.endTime;
-                        if (maxTime < episode.endTime) maxTime = episode.endTime;
+                        if (typeof episode.beginTime !== "undefined") {
+                            if (minTime == null || minTime > parseTime(episode.beginTime)) minTime = parseTime(episode.beginTime);
+                            if (maxTime == null || maxTime < parseTime(episode.beginTime)) maxTime = parseTime(episode.beginTime);
+                        }
+                        if (typeof episode.endTime !== "undefined") {
+                            if (minTime == null || minTime > parseTime(episode.endTime)) minTime = parseTime(episode.endTime);
+                            if (maxTime == null || maxTime < parseTime(episode.endTime)) maxTime = parseTime(episode.endTime);
+                        }
                     });
 
                     if (event.events != null)
@@ -255,6 +265,18 @@ MIT License Applies
             }
 
             findTimeRangesInt(events);
+
+            if (minTime === null && maxTime === null) {
+                minTime = new Date();
+            }
+            if (minTime === null) {
+                minTime = maxTime;
+                minTime.setMonth(minTime.getMonth() - 1);
+            }
+            if (maxTime === null) {
+                maxTime = minTime;
+                maxTime.setMonth(maxTime.getMonth() + 1);
+            }
 
             return {
                 beginTime: minTime, endTime: maxTime
@@ -267,7 +289,7 @@ MIT License Applies
 
         function getPixelSize(timeRange) {
             let oneDay = 24 * 60 * 60 * 1000;
-            let res = Math.round(Math.abs((timeRange.endTime.getTime() -timeRange.beginTime.getTime()) * control.options.columnWidth / oneDay));
+            let res = Math.round(Math.abs((timeRange.endTime.getTime() - timeRange.beginTime.getTime()) * control.options.columnWidth / oneDay));
             return res;
         }
 
@@ -280,12 +302,20 @@ MIT License Applies
         }
 
         function getEventEpisodes(event) {
-            let episodes = typeof event.episodes !== "undefined" ? event.episodes : [{
-                beginTime: event.beginTime,
-                endTime: event.endTime,
-                color: event.color
-            }];
-            return episodes;
+            if (typeof event.episodes !== "undefined") {
+                return event.episodes;
+            }
+            else if (typeof event.beginTime !== "undefined" && event.beginTime != null) {
+                let episodes = [{
+                    beginTime: event.beginTime,
+                    endTime: event.endTime,
+                    color: event.color
+                }];
+                return episodes;
+            }
+            else {
+                return null;
+            }
         }
 
     }
