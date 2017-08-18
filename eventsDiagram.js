@@ -303,7 +303,9 @@ MIT License Applies
 
         function getEventEpisodes(event) {
             if (typeof event.episodes !== "undefined") {
-                return event.episodes;
+                return event.episodes.filter(function (episode) {
+                    return typeof episode.beginTime !== "undefined" && episode.beginTime != null;
+                });
             }
             else if (typeof event.beginTime !== "undefined" && event.beginTime != null) {
                 let episodes = [{
