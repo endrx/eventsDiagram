@@ -5,7 +5,7 @@ Lightweight timeline diagram jQuery plugin.
 Example: http://output.jsbin.com/ceweteb
 
 
-![Sample diagram](http://i.imgur.com/QB8vBhw.png)
+![Sample diagram](http://i.imgur.com/0WaIWup.png)
 
 
 ```javascript
