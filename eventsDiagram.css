@@ -85,15 +85,15 @@ MIT License Applies
     border-bottom: 1px solid #eee;
 }
 
-.ed-bar-container {
+.ed-events-container {
     position: absolute;
     top: 0;
     height: 0;
 }
-.ed-bar-row {
+.ed-events-row {
     position: relative;
 }
-.ed-bar {
+.ed-event {
     position: absolute;
     margin-top: 4px;
     z-index: 1;

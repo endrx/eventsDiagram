@@ -37,13 +37,31 @@ MIT License Applies
                 .empty()
                 .append(control.$mainContainer);
 
-            control.$mainContainer.on("scroll", function (e) {
-                let topOffset = e.currentTarget.scrollTop;
-                let leftOffset = e.currentTarget.scrollLeft;
+            function scrollReaction(target) {
+                let topOffset = target.scrollTop;
+                let leftOffset = target.scrollLeft;
                 control.$cornerHeader.css("left", leftOffset + "px");
                 control.$cornerHeader.css("top", topOffset + "px");
                 control.$topHeader.css("top", topOffset + "px");
                 control.$leftHeader.css("left", leftOffset + "px");
+            }
+            let scrollTimeout = null;
+            control.$mainContainer.on("scroll", function (e) {
+                //if (isMobile()) {
+                //    if (scrollTimeout !== null) {
+                //        clearTimeout(scrollTimeout);
+                //    }
+                //    control.$cornerHeader.hide();
+                //    control.$leftHeader.hide();
+                //    scrollTimeout = setTimeout(function () {
+                //        control.$cornerHeader.show();
+                //        control.$leftHeader.show();
+                //        scrollTimeout = null;
+                //        scrollReaction();
+                //    }, 250);
+                //}
+                //else
+                    scrollReaction(e.currentTarget);
             });
 
             setLeftHeaderWidth(control.options.leftHeadersWidth);
@@ -52,7 +70,7 @@ MIT License Applies
             buildTopHeaders();
 
             buildGrid();
-            buildBarRows();
+            buildEventRows();
 
             processHeights();
         }
@@ -141,15 +159,15 @@ MIT License Applies
 
         }
 
-        function buildBarRows() {
+        function buildEventRows() {
 
-            let $barRows = $("<div />").addClass("ed-bar-container");
+            let $eventRows = $("<div />").addClass("ed-events-container");
 
-            function buildBarRowsRec(events) {
+            function buildEventRowsRec(events) {
                 $.each(events, function (iEvent, event) {
 
-                    let $barRow = $("<div />")
-                                .addClass("ed-bar-row")
+                    let $eventRow = $("<div />")
+                                .addClass("ed-events-row")
                                 .css("width", control.options.columnWidth * control.days);
 
                     let episodes = getEventEpisodes(event);
@@ -157,8 +175,8 @@ MIT License Applies
                         $.each(episodes, function (iEpisode, episode) {
                             let episodePixelOffset = getPixelSize({ beginTime: control.gridBeginTime, endTime: parseTime(episode.beginTime) });
                             let episodePixelWidth = getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(episode.endTime) });
-                            let $bar = $("<div />")
-                                        .addClass("ed-bar")
+                            let $event = $("<div />")
+                                        .addClass("ed-event")
                                         .css("left", episodePixelOffset)
                                         .css("width", episodePixelWidth)
                                         .css("background-color", episode.color);
@@ -186,25 +204,25 @@ MIT License Applies
                                             .css("left", pixelOffset)
                                             .css("width", pixelWidth)
                                             .css("background-color", cut.nextColor);
-                                    $bar.append($cutNext);
+                                    $event.append($cutNext);
                                 });
                             }
 
-                            $barRow.append($bar);
+                            $eventRow.append($event);
                         });
 
-                        $barRows.append($barRow);
+                        $eventRows.append($eventRow);
                     }
 
                     if (typeof event.events !== "undefined" && event.events != null) {
-                        buildBarRowsRec(event.events);
+                        buildEventRowsRec(event.events);
                     }
                 });
             }
 
-            buildBarRowsRec(control.options.events);
+            buildEventRowsRec(control.options.events);
 
-            control.$grid.append($barRows);
+            control.$grid.append($eventRows);
         }
 
         function buildGrid() {
@@ -264,13 +282,11 @@ MIT License Applies
                 $.each(control.$grid.find(".ed-cell-row"), function (i, el) {
                     $(el).height(heights[i]);
                 });
-                //control.$grid.find(".ed-bar-container")
-                //        .css("top", -totalHeight + "px");
-                $.each(control.$grid.find(".ed-bar-row"), function (i, el) {
+                $.each(control.$grid.find(".ed-events-row"), function (i, el) {
                     let height = heights[i];
                     $(el)
                         .height(height)
-                        .find(".ed-bar").height(height > 20 ? 14 : height - 6);
+                        .find(".ed-event").height(height > 20 ? 14 : height - 6);
                 });
 
             }, 1);
@@ -379,9 +395,13 @@ MIT License Applies
             return episode.cuts;
         }
 
+        function isMobile() {
+            return typeof window.orientation !== "undefined";
+        };
+
     }
 
-    EventsDiagram.Version = "0.4.5";
+    EventsDiagram.Version = "0.4.6";
 
     EventsDiagram.Defaults = {
         events: [],
