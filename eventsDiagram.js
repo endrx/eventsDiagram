@@ -13,9 +13,9 @@ MIT License Applies
         control.options = $.extend({}, $.fn.eventsDiagram.Defaults, options);
         control.$element = $(element);
 
-        init();
+        redraw();
 
-        function init() {
+        function redraw() {
 
             //control.$element.css("box-sizing", "border-box").css("border", "1px solid magenta");
 
@@ -73,11 +73,13 @@ MIT License Applies
 
             control.months = {};
             control.days = [];
+            control.dates = [];
 
-            enumerateDays(control.gridBeginTime, control.gridEndTime, function (day) {
-                let month = day.getFullYear() + "/" + (day.getMonth() + 1);
+            enumerateDays(control.gridBeginTime, control.gridEndTime, function (date) {
+                let month = date.getFullYear() + "." + ("0" + (date.getMonth() + 1)).substr(-2);
                 control.months[month] = 1 + (control.months[month] || 0);
-                control.days.push(day.getDate());
+                control.days.push(date.getDate());
+                control.dates.push(new Date(date));
             });
         }
 
@@ -102,9 +104,14 @@ MIT License Applies
 
             for (let dayIndex in control.days) {
                 var day = control.days[dayIndex];
+                let color = null;
+                if (options.cellColorSetter != null) {
+                    color = options.cellColorSetter(control.dates[dayIndex], null);
+                }
                 let $day = $("<div />")
                     .addClass("ed-calend-day")
                     .css("width", control.options.columnWidth + "px")
+                    .css("background-color", color)
                     .text(day);
                 $daysRow.append($day);
             }
@@ -210,13 +217,19 @@ MIT License Applies
 
                     let $cellsRow = $("<div />").addClass("ed-cell-row");
 
-                    $.each(control.days, function (i, day) {
+                    $.each(control.days, function (iDay, day) {
+
+                        let color = null;
+                        if (options.cellColorSetter != null) {
+                            color = options.cellColorSetter(control.dates[iDay], event);
+                        }
 
                         let $cell = $("<div />")
                             .addClass("ed-cell")
-                            .css("width", control.options.columnWidth + "px");
+                            .css("width", control.options.columnWidth + "px")
+                            .css("background-color", color);
                         $cellsRow.append($cell);
-                });
+                    });
 
                     $gridCells.append($cellsRow);
 
