@@ -124,7 +124,10 @@ MIT License Applies
                 var day = control.days[dayIndex];
                 let color = null;
                 if (options.cellColorSetter != null) {
-                    color = options.cellColorSetter(control.dates[dayIndex], null);
+                    color = options.cellColorSetter({
+                        date: control.dates[dayIndex],
+                        event: null
+                    });
                 }
                 let $day = $("<div />")
                     .addClass("ed-calend-day")
@@ -162,12 +165,13 @@ MIT License Applies
         function buildEventRows() {
 
             let $eventRows = $("<div />").addClass("ed-events-container");
+            let isEpisodeClick = options.episodeClick != null;
 
             function buildEventRowsRec(events) {
                 $.each(events, function (iEvent, event) {
 
                     let $eventRow = $("<div />")
-                                .addClass("ed-events-row")
+                                .addClass("ed-event")
                                 .css("width", control.options.columnWidth * control.days);
 
                     let episodes = getEventEpisodes(event);
@@ -175,11 +179,20 @@ MIT License Applies
                         $.each(episodes, function (iEpisode, episode) {
                             let episodePixelOffset = getPixelSize({ beginTime: control.gridBeginTime, endTime: parseTime(episode.beginTime) });
                             let episodePixelWidth = getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(episode.endTime) });
-                            let $event = $("<div />")
-                                        .addClass("ed-event")
+                            let $episode = $("<div />")
+                                        .addClass("ed-episode")
                                         .css("left", episodePixelOffset)
                                         .css("width", episodePixelWidth)
-                                        .css("background-color", episode.color);
+                                        .css("background-color", episode.color)
+                                        .css("cursor", isEpisodeClick ? "pointer" : "default")
+                                        .on("click", function () {
+                                            if (isEpisodeClick) {
+                                                options.episodeClick({
+                                                    episode: episode,
+                                                    event: event
+                                                });
+                                            }
+                                        });
 
                             let cuts = getEpisodeCuts(episode);
                             if (cuts != null) {
@@ -204,11 +217,11 @@ MIT License Applies
                                             .css("left", pixelOffset)
                                             .css("width", pixelWidth)
                                             .css("background-color", cut.nextColor);
-                                    $event.append($cutNext);
+                                    $episode.append($cutNext);
                                 });
                             }
 
-                            $eventRow.append($event);
+                            $eventRow.append($episode);
                         });
 
                         $eventRows.append($eventRow);
@@ -239,7 +252,10 @@ MIT License Applies
 
                         let color = null;
                         if (options.cellColorSetter != null) {
-                            color = options.cellColorSetter(control.dates[iDay], event);
+                            color = options.cellColorSetter({
+                                date: control.dates[iDay],
+                                event: event
+                            });
                         }
 
                         let $cell = $("<div />")
@@ -282,7 +298,7 @@ MIT License Applies
                 $.each(control.$grid.find(".ed-cell-row"), function (i, el) {
                     $(el).height(heights[i]);
                 });
-                $.each(control.$grid.find(".ed-events-row"), function (i, el) {
+                $.each(control.$grid.find(".ed-event"), function (i, el) {
                     let height = heights[i];
                     $(el)
                         .height(height)

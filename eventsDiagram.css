@@ -90,10 +90,10 @@ MIT License Applies
     top: 0;
     height: 0;
 }
-.ed-events-row {
+.ed-event {
     position: relative;
 }
-.ed-event {
+.ed-episode {
     position: absolute;
     margin-top: 4px;
     z-index: 1;
@@ -101,7 +101,7 @@ MIT License Applies
     background-color: lightgray;
     border: 1px solid gray;
     border-radius: 2px;
-    height: 18px;
+    height: 16px;
 }
 .ed-cut {
     position: absolute;
