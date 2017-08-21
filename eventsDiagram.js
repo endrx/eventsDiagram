@@ -417,7 +417,7 @@ MIT License Applies
 
     }
 
-    EventsDiagram.Version = "0.4.6";
+    EventsDiagram.Version = "0.4.8";
 
     EventsDiagram.Defaults = {
         events: [],
