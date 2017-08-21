@@ -139,7 +139,7 @@ MIT License Applies
             let $barRows = $("<div />").addClass("ed-bar-container");
 
             function buildBarRowsRec(events) {
-                $.each(events, function (i, event) {
+                $.each(events, function (iEvent, event) {
 
                     let $barRow = $("<div />")
                                 .addClass("ed-bar-row")
@@ -147,12 +147,42 @@ MIT License Applies
 
                     let episodes = getEventEpisodes(event);
                     if (episodes != null) {
-                        $.each(episodes, function (ii, episode) {
+                        $.each(episodes, function (iEpisode, episode) {
+                            let episodePixelOffset = getPixelSize({ beginTime: control.gridBeginTime, endTime: parseTime(episode.beginTime) });
+                            let episodePixelWidth = getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(episode.endTime) });
                             let $bar = $("<div />")
                                         .addClass("ed-bar")
-                                        .css("left", getPixelSize({ beginTime: control.gridBeginTime, endTime: parseTime(episode.beginTime) }))
-                                        .css("width", getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(episode.endTime) }))
+                                        .css("left", episodePixelOffset)
+                                        .css("width", episodePixelWidth)
                                         .css("background-color", episode.color);
+
+                            let cuts = getEpisodeCuts(episode);
+                            if (cuts != null) {
+                                $.each(cuts, function (iCut, cut) {
+                                    let endTime = episode.endTime;
+                                    let widthDelta = -1;
+                                    if(iCut < cuts.length - 1) {
+                                        endTime = cuts[iCut + 1].cutTime;
+                                        widthDelta++;
+                                    }
+                                    let pixelOffset = getPixelSize({ beginTime: parseTime(episode.beginTime), endTime: parseTime(cut.cutTime) });
+                                    let pixelWidth = getPixelSize({ beginTime: parseTime(cut.cutTime), endTime: parseTime(endTime) });
+                                    if (pixelOffset > 0) {
+                                        pixelOffset--;
+                                    }
+                                    else {
+                                        widthDelta--;
+                                    }
+                                    pixelWidth += widthDelta;
+                                    let $cutNext = $("<div />")
+                                            .addClass("ed-cut")
+                                            .css("left", pixelOffset)
+                                            .css("width", pixelWidth)
+                                            .css("background-color", cut.nextColor);
+                                    $bar.append($cutNext);
+                                });
+                            }
+
                             $barRow.append($bar);
                         });
 
@@ -302,7 +332,7 @@ MIT License Applies
         }
 
         function getEventEpisodes(event) {
-            if (typeof event.episodes !== "undefined") {
+            if (typeof event.episodes !== "undefined" && event.episodes !== null) {
                 return event.episodes.filter(function (episode) {
                     return typeof episode.beginTime !== "undefined" && episode.beginTime != null;
                 });
@@ -311,13 +341,29 @@ MIT License Applies
                 let episodes = [{
                     beginTime: event.beginTime,
                     endTime: event.endTime,
-                    color: event.color
+                    color: event.color,
+                    cuts: event.cuts
                 }];
+                if (typeof event.cutTime !== "undefined") {
+                    episodes[0].cuts = [{
+                        cutTime: event.cutTime,
+                        nextColor: event.nextColor
+                    }];
+                }
                 return episodes;
             }
             else {
                 return null;
             }
+        }
+        function getEpisodeCuts(episode) {
+            if (typeof episode.cutTime !== "undefined") {
+                return [{
+                    cutTime: episode.cutTime,
+                    nextColor: episode.nextColor
+                }];
+            }
+            return episode.cuts;
         }
 
     }

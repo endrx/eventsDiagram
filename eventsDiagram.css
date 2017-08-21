@@ -103,3 +103,7 @@ MIT License Applies
     border-radius: 2px;
     height: 18px;
 }
+.ed-cut {
+    position: absolute;
+    height: 14px;
+}
